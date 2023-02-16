@@ -15,12 +15,13 @@
         <input type="text" placeholder="Todo Title" id="todoTitle">
         <input type="text" placeholder="Todo Category" id="todoCategory">
         <input type="time" placeholder="Todo Time" id="todoTime">
-        <input type="file" id="myFile">
+        <input type="file" id="myFile" accept=".jpg">
         <button id="addTodoBtn">Add Todo</button>
         <hr>
         <div id="disp">
 
         </div>
+        <button onclick="test()">Test</button>
 
         <script type="module">
             import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
@@ -102,25 +103,38 @@
                     todoIndex = allTodo.length
                     disp.innerHTML = ""
                     allTodo.map((eachTodo)=>{
-                    disp.innerHTML += `
+                    let storageRef = stRef(storage,`images/${eachTodo.todoImg}`)
+                    getDownloadURL(storageRef).then((downloadURL)=>{
+                        console.log(downloadURL)
+                        disp.innerHTML += `
                         <h1>
                             ${eachTodo.todotitle}
                             ${eachTodo.todocategory}
                             ${eachTodo.todotime}
                         </h1>
+                        <img src='${downloadURL}' width="300px" height="300px"/>
+                        <audio src='${downloadURL}' controls/>
                     `
+                    })
+                   
                     })
                 }else{
                     todoIndex = 0
                 }
                 
-                console.log(todoIndex)
-                
+                console.log(allTodo)
+                allTodo.splice(0,1)
+                console.log(allTodo)
                 
             })
             //getting info stored in database
             //generating new indexes
             //personalized database
+
+            function test(){
+                alert("hello")
+            }
+            window.test = test
         </script>
     </body>
 </html>
